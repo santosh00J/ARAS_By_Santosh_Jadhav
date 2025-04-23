@@ -1,0 +1,40 @@
+
+
+  Innovator inn = this.getInnovator();
+  //***** GRANT IDENTITY PRIVILEGES
+  grantIdentityPrivileges("Administrators");  // If this is enabled always revoke the privileges in the Finally below.
+  //*******************************
+      
+  Item result = this;     // default return value.
+  try 
+  {
+      Item Identity_2 = inn.newItem("Alias", "get");
+      Identity_2.setProperty("source_id", inn.getUserID());
+      Identity_2.setAttribute("select", "related_id");
+      Identity_2 = Identity_2.apply();
+      if(Identity_2.isError())
+      {
+          return inn.newError("Error occurred while fetching Alias Identity.\nError : "+alias.getErrorString());
+      }
+      string loginUserIdentity_03 = Identity_2.getProperty("related_id");
+      string ecnNumber = this.getProperty("item_number");
+      string ecrID = this.getID();
+
+      Item itemPCN = inn.newItem("XX_PCN", "add");
+      itemPCN.setProperty("item_number",ecnNumber.Replace("ECR-","PCN-"));
+      itemPCN.setProperty("owned_by_id", loginUserIdentity_03);
+      itemPCN.setProperty("oc_relatedecr", ecrID);
+      itemPCN = itemPCN.apply();
+      
+  }
+  catch(Exception argex) {
+      result = inn.newError(argex.Message);
+  }
+  finally {
+      //**** REVOKE IDENTITY PRIVILEGES
+      revokeIdentityPrivileges();
+      //*******************************
+  }
+  return result;
+
+
