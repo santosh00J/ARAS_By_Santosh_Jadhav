@@ -1,21 +1,10 @@
     /* *****************************************************************************
-    Method Name:            ""
-    Client Name:            ""
-    Created By/Company:     ""
-    Creation Date:          ""
     Description:
                 - On the basis of state of Item, change the color of property Label
-    
     Hooks:
         Type:   Client Event
         Hooks:  'onFormPopulate'
-        
-    Revisions:
-        Rev Date        Modified By             Description
-        2024-09-10     SJ                      Initial Creation
         ***************************************************************************** */
-        
-
     function changeProLabelColor(fields, colorCode) {
         fields.forEach(field => {
             const element = document.getElementsByName(field)[0];
